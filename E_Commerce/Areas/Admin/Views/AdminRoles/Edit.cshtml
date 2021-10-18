@@ -1,0 +1,36 @@
+﻿@model E_Commerce.Models.Role
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-header">
+    <h2 class="header-title">Quản Lý Quyền Truy Cập</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index" class="breadcrumb-item">Quản Lý Quyền truy cập</a>
+            <span class="breadcrumb-item active">Chỉnh sửa Quyền Truy Cập</span>
+        </nav>
+    </div>
+</div>
+<form method="post" asp-area="Admin" asp-controller="AdminRoles" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.RoleId" />
+    <div class="form-group">
+        <div class="form-group col-md-3">
+            <label for="inputEmail4">Role Name</label>
+            <input type="text" class="form-control" asp-for="@Model.RoleName" placeholder="Role Name">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="inputPassword4">Description</label>
+            <input type="text" class="form-control" asp-for="@Model.Description" placeholder="Description">
+        </div>
+        <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-primary ">Save</button> |
+            <button class="btn btn-info" asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Back To List</button>
+        </div>
+    </div>
+</form>
+
+

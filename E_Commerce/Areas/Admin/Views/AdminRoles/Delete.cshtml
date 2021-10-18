@@ -1,0 +1,47 @@
+﻿@model E_Commerce.Models.Role
+
+@{
+    ViewData["Title"] = "Xác nhận xóa Quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2 class="header-title">Xác nhận xóa Quyền truy cập</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminRoles" asp-action="Index" class="breadcrumb-item">Quản Lý quyền truy cập</a>
+            <span class="breadcrumb-item active">Xác nhận xóa Quyền truy cập</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Xóa Quyền Truy Cập</h4>
+        <div class="table-responsive">
+            <table class="product-info-table m-t-20">
+                <tbody>
+                    <tr>
+                        <td class="font-weight-bold">ID:</td>
+                        <td class="text-dark font-weight-semibold">@Model.RoleId</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Role Name:</td>
+                        <td>	@Model.RoleName</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Description:</td>
+                        <td>@Model.Description</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="RoleId" />
+            <input type="submit" value="Xác nhận Xóa" class="btn btn-danger" /> |
+            <button class="btn btn-info" asp-controller="AdminRoles" asp-action="Index">Back To List</button>
+        </form>
+    </div>
+</div>
+
+
