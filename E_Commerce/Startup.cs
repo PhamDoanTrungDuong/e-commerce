@@ -61,7 +61,7 @@ namespace E_Commerce
             //    options.ExpireTimeSpan = TimeSpan.FromDays(150);
             //});
 
-            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
+            services.AddNotyf(config => { config.DurationInSeconds = 3; config.IsDismissable = true; config.Position = NotyfPosition.TopCenter; });
 
         }
 

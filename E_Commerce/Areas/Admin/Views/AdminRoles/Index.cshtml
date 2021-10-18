@@ -34,7 +34,7 @@
                         <td>@item.RoleName</td>
                         <td>@item.Description</td>
                         <td>
-                            <a class="btn btn-success m-r-5"Admin" asp-controller="AdminRoles" asp-action="Details" asp-route-id="@item.RoleId">View</a>
+                            <a class="btn btn-success m-r-5" asp-area="Admin" asp-controller="AdminRoles" asp-action="Details" asp-route-id="@item.RoleId">View</a>
                             <a class="btn btn-warning m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminRoles" asp-action="Edit" asp-route-id="@item.RoleId"><i class="anticon anticon-edit"></i> Update</a>
                             <a class="btn btn-danger m-r-5 text-white" asp-area="Admin" asp-controller="AdminRoles" asp-action="Delete" asp-route-id="@item.RoleId"><i class="anticon anticon-delete"></i> Delete</a>
                         </td>
