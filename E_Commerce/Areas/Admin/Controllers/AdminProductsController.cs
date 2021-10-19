@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
 using Blogs.Helpers;
 using PagedList.Core;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
@@ -15,10 +18,12 @@ namespace E_Commerce.Areas.Admin.Controllers
     public class AdminProductsController : Controller
     {
         private readonly MarketDBContext _context;
+        public INotyfService _notifyService { get; }
 
-        public AdminProductsController(MarketDBContext context)
+        public AdminProductsController(MarketDBContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/AdminProducts
@@ -61,9 +66,9 @@ namespace E_Commerce.Areas.Admin.Controllers
             if (CatID == 0)
             {
                 url = $"/Admin/AdminProducts";
-            }
+            }   
            
-            return Json(new { status = "success", Redirecturl = url });
+            return Json(new { status = "success", redirectUrl = url });
         }
 
         // GET: Admin/AdminProducts/Details/5
@@ -99,12 +104,25 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModifield,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitslnStock,AccountId")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModifield,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitslnStock,AccountId")] Product product, IFormFile fthumb)
         {
             if (ModelState.IsValid)
             {
+                product.ProductName = Utilities.ToTitleCase(product.ProductName);
+                if (fthumb != null)
+                {
+                    string extension = Path.GetExtension(fthumb.FileName);
+                    string image = "icon_" + Utilities.ToUrlFriendly(product.Title) + "preview" + extension;
+                    product.Thumb = await Utilities.UploadFile(fthumb, @"products", image.ToLower());
+                }
+                if (string.IsNullOrEmpty(product.Thumb)) product.Thumb = "default.jpg";
+                product.Alias = Utilities.ToUrlFriendly(product.ProductName);
+                product.DateModifield = DateTime.Now;
+                product.DateCreated = DateTime.Now;
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Create Success");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", product.AccountId);
@@ -135,7 +153,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModifield,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitslnStock,AccountId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,ShortDesc,Description,CatId,Price,Discount,Thumb,Video,DateCreated,DateModifield,BestSellers,HomeFlag,Active,Tags,Title,Alias,MetaDesc,MetaKey,UnitslnStock,AccountId")] Product product, IFormFile fthumb)
         {
             if (id != product.ProductId)
             {
@@ -146,8 +164,21 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 try
                 {
+                    product.ProductName = Utilities.ToTitleCase(product.ProductName);
+                    if (fthumb != null)
+                    {
+                        string extension = Path.GetExtension(fthumb.FileName);
+                        string image = "icon_" + Utilities.ToUrlFriendly(product.Title) + "preview" + extension;
+                        product.Thumb = await Utilities.UploadFile(fthumb, @"products", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(product.Thumb)) product.Thumb = "default.jpg";
+                    product.Alias = Utilities.ToUrlFriendly(product.ProductName);
+                    product.DateModifield = DateTime.Now;
+
                     _context.Update(product);
+                    _notifyService.Success("Update Success");
                     await _context.SaveChangesAsync();
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -194,6 +225,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             var product = await _context.Products.FindAsync(id);
             _context.Products.Remove(product);
+            _notifyService.Success("Delete Success");
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
