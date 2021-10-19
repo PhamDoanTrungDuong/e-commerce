@@ -1,24 +1,27 @@
-﻿@model IEnumerable<E_Commerce.Models.Account>
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<E_Commerce.Models.Post>
 
 @{
-    ViewData["Title"] = "Quản Lý Tài Khoản";
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách Tin tức" + CurrentPage;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="page-header">
-    <h2 class="header-title">Quản Lý Tài Khoản</h2>
+    <h2 class="header-title">Quản Lý Tin Tức</h2>
     <div class="header-sub-title">
         <nav class="breadcrumb breadcrumb-dash">
             <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
-            <span class="breadcrumb-item active">Quản Lý Tài Khoản</span>
+            <span class="breadcrumb-item active">Danh sách Tin tức| Trang: @CurrentPage</span>
         </nav>
     </div>
 </div>
 <div class="card">
     <div class="card-body">
-
-        <div class="m-b-20">
-            <a class="btn btn-primary" asp-controller="AdminAccounts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i>Thêm Tin tức</a>
+        <div>
+            <div>
+                <a class="btn btn-primary" asp-controller="AdminPosts" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i>Thêm Tin tức</a>
+            </div>
         </div>
 
         <div class="table-responsive">
@@ -26,11 +29,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Họ và Tên</th>
-                        <th>Email</th>
-                        <th>Điện thoại</th>
-                        <th>Lần truy cập cuối</th>
-                        <th>Quyền truy cập</th>
+                        <th>Tiêu đề</th>
                         <th>Trạng thái</th>
                         <th></th>
                     </tr>
@@ -42,24 +41,17 @@
                         {
                             <tr>
                                 <td>
-                                    @item.AccountId
+                                    @item.PostId
                                 </td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img class="img-fluid rounded" src="assets/images/others/thumb-9.jpg" style="max-width: 60px" alt="">
-                                        <h6 class="m-b-0 m-l-10">@item.FullName</h6>
-                                    </div>
+                                    @item.Title
                                 </td>
-                                <td>@item.Email</td>
-                                <td>@item.Phone</td>
-                                <td>@item.LastLogin</td>
-                                <td>@item.Role.Description</td>
                                 <td>
-                                    @if (@item.Active)
+                                    @if (item.Published == true)
                                     {
                                         <div class="d-flex align-items-center">
                                             <div class="badge badge-success badge-dot m-r-10"></div>
-                                            <div>Active</div>
+                                            <div>Public</div>
                                         </div>
                                     }
                                     else
@@ -71,15 +63,20 @@
                                     }
                                 </td>
                                 <td class="text-right">
-                                    <a class="btn btn-success btn-sm m-r-5" Admin" asp-controller="AdminAccounts" asp-action="Details" asp-route-id="@item.AccountId">View</a>
-                                    <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Edit" asp-route-id="@item.AccountId"><i class="anticon anticon-edit"></i> Update</a>
-                                    <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminAccounts" asp-action="Delete" asp-route-id="@item.AccountId"><i class="anticon anticon-delete"></i> Delete</a>
+                                    <a class="btn btn-success btn-sm m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Details" asp-route-id="@item.PostId">View</a>
+                                    <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminPosts" asp-action="Edit" asp-route-id="@item.PostId"><i class="anticon anticon-edit"></i> Update</a>
+                                    <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminPosts" asp-action="Delete" asp-route-id="@item.PostId"><i class="anticon anticon-delete"></i> Delete</a>
                                 </td>
                             </tr>
                         }
                     }
                 </tbody>
             </table>
+            <div aria-label="Page navigation">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-action="Index" asp-controller="AdminPosts" asp-area="Admin" asp-route-query="@Model" />
+                </ul>
+            </div>
         </div>
     </div>
 </div>

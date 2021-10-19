@@ -24,7 +24,7 @@
                     <div class="m-b-10 m-r-15">
                         <select class="custom-select" asp-items="ViewBag.DanhMuc" id="txtCatID" name="txtCatID" style="min-width: 180px;">
                             <option value="" disabled selected>Chọn Danh Mục</option>
-                            <option value="0" >Chọn Tất Cả</option>
+                            <option value="0">Chọn Tất Cả</option>
                         </select>
                     </div>
                     <div class="m-b-10">
@@ -115,9 +115,8 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-    
             jQuery("#txtCatID").change(function () {
-                var catID = jquery(this).children(":selected").attr("value");
+                var catID = jQuery(this).children(":selected").attr("value");
                 catID = parseFloat(catID);
                 $('#txtCatID option')
                     .removeAttr("selected");
@@ -139,7 +138,6 @@
                     }
                 });
             });
-
         });
     </script>
 }
