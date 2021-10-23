@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
 using PagedList.Core;
+using Microsoft.AspNetCore.Http;
+using Blogs.Helpers;
+using System.IO;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
@@ -14,17 +18,18 @@ namespace E_Commerce.Areas.Admin.Controllers
     public class AdminPagesController : Controller
     {
         private readonly MarketDBContext _context;
-
-        public AdminPagesController(MarketDBContext context)
+        public INotyfService _notifyService { get; }
+        public AdminPagesController(MarketDBContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/AdminPages
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = 1;//Utilities.PAGE_SIZE;
+            var pageSize = Utilities.PAGE_SIZE;
             var lsPages = _context.Pages
                 .OrderBy(x => x.PageId);
 
@@ -62,14 +67,27 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page)
+        public async Task<IActionResult> Create([Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page, IFormFile fthumb)
         {
             if (ModelState.IsValid)
             {
+                page.PageName = Utilities.ToTitleCase(page.PageName);
+                if (fthumb != null)
+                {
+                    string extension = Path.GetExtension(fthumb.FileName);
+                    string image = "thumb_" + Utilities.ToUrlFriendly(page.Title) + "preview" + extension;
+                    page.Thumb = await Utilities.UploadFile(fthumb, @"pages", image.ToLower());
+                }
+                if (string.IsNullOrEmpty(page.Thumb)) page.Thumb = "default.jpg";
+                page.Alias = Utilities.ToUrlFriendly(page.PageName);
+                page.CreateDate = DateTime.Now;
+
                 _context.Add(page);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Create Success");
                 return RedirectToAction(nameof(Index));
             }
+           
             return View(page);
         }
 
@@ -94,7 +112,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page)
+        public async Task<IActionResult> Edit(int id, [Bind("PageId,PageName,Contents,Thumb,Published,Title,MetaDesc,MetaKey,Alias,CreateDate,Ordering")] Page page, IFormFile fthumb)
         {
             if (id != page.PageId)
             {
@@ -105,8 +123,21 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 try
                 {
+                    page.PageName = Utilities.ToTitleCase(page.PageName);
+                    if (fthumb != null)
+                    {
+                        string extension = Path.GetExtension(fthumb.FileName);
+                        string image = "thumb_" + Utilities.ToUrlFriendly(page.Title) + "preview" + extension;
+                        page.Thumb = await Utilities.UploadFile(fthumb, @"pages", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(page.Thumb)) page.Thumb = "default.jpg";
+                    page.Alias = Utilities.ToUrlFriendly(page.PageName);
+                    page.CreateDate = DateTime.Now;
+
                     _context.Update(page);
+                    _notifyService.Success("Update Success");
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,6 +180,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             var page = await _context.Pages.FindAsync(id);
             _context.Pages.Remove(page);
+            _notifyService.Success("Delete Success");
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

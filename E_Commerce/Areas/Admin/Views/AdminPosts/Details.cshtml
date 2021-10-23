@@ -1,115 +1,115 @@
 ﻿@model E_Commerce.Models.Post
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi Tiết Tin Tức";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Scontents)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Scontents)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Contents)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Contents)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Thumb)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Published)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Published)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Alias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Alias)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tags)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tags)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CatId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CatId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsHot)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsHot)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsNewFeed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsNewFeed)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MetaDesc)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MetaDesc)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MetaKey)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MetaKey)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Views)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Views)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Account.AccountId)
-        </dd>
-    </dl>
+<div class="page-header">
+    <h2 class="header-title">Chi Tiết Tin Tức</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminPosts" asp-action="Index" class="breadcrumb-item">Quản Lý Tin Tức</a>
+            <span class="breadcrumb-item active">Chi Tiết Tin Tức</span>
+        </nav>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.PostId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<div class="form-layout">
+    <div class="row mg-b-25">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-control-label">TÊN TIN TỨC: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="Title">
+            </div>
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-control-label">TIÊU ĐỀ: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="Scontents">
+            </div>
+        </div><!-- col-4 -->
+    </div><!-- row -->
+    <div class="row mg-b-25">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="form-control-label">NỘI DUNG: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="Contents">
+            </div>
+        </div><!-- col-4 -->
+    </div>
+    <div class="row mg-b-25">
+        <div class="col-lg-6">
+            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
+            <select class="custom-select" asp-items="ViewBag.AccountId" asp-for="AccountId" style="min-width: 180px;" disabled>
+                <option value=""  selected>Chọn quyền Tác giả</option>
+            </select>
+        </div><!-- col-4 -->
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="font-weight-semibold">Hình Ảnh: </label>
+                <br />
+                <img src="~/images/posts/@Model.Thumb" width="200"><br /><br />
+                <input disabled type="file" name="fthumb" class="form-control-file" asp-for="Thumb">
+                <span asp-validation-for="Thumb" class="text-danger"></span>
+            </div>
+        </div><!-- col-4 -->
+    </div>
+    <div class="row mg-b-25">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="form-control-label">TAGS: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="Tags">
+            </div>
+        </div><!-- col-4 -->
+        <div class="form-group col-md-6">
+            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
+            <select class="custom-select" asp-items="ViewBag.DanhMuc" asp-for="CatId" style="min-width: 180px;" disabled>
+                <option value="" selected >Chọn quyền Danh mục</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mg-b-25">
+        <div class="col-lg-4">
+            <div class="form-group d-flex align-items-center p-t-30">
+                <div class="switch m-r-10">
+                    <input disabled type="checkbox" asp-for="IsHot">
+                    <label for="IsHot"></label>
+                </div>
+                <label>IsHot</label>
+            </div>
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+            <div class="form-group d-flex align-items-center p-t-30">
+                <div class="switch m-r-10">
+                    <input disabled type="checkbox" asp-for="IsNewFeed">
+                    <label for="IsNewFeed"></label>
+                </div>
+                <label>IsNewFeed</label>
+            </div>
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+            <div class="form-group d-flex align-items-center p-t-30">
+                <div class="switch m-r-10">
+                    <input disabled type="checkbox" asp-for="Published">
+                    <label for="Published"></label>
+                </div>
+                <label>Published</label>
+            </div>
+        </div><!-- col-4 -->
+    </div><!-- row -->
+    <div class="row mg-b-25">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-control-label">MetaKey: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="MetaKey">
+            </div>
+        </div><!-- col-4 -->
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-control-label">MetaDesc: <span class="text-danger">*</span></label>
+                <input disabled class="form-control" type="text" asp-for="MetaDesc">
+            </div>
+        </div><!-- col-4 -->
+    </div>
+</div><!-- form-layout -->
