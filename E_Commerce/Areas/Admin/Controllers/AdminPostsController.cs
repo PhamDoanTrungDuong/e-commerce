@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
 using PagedList.Core;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Blogs.Helpers;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
@@ -14,17 +18,18 @@ namespace E_Commerce.Areas.Admin.Controllers
     public class AdminPostsController : Controller
     {
         private readonly MarketDBContext _context;
-
-        public AdminPostsController(MarketDBContext context)
+        public INotyfService _notifyService { get; }
+        public AdminPostsController(MarketDBContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/AdminPosts
         public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
-            var pageSize = 1;//Utilities.PAGE_SIZE;
+            var pageSize = Utilities.PAGE_SIZE;
             var lsPpsts = _context.Posts
                 .Include(x => x.Account)
                 .OrderBy(x => x.PostId);
@@ -56,7 +61,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         // GET: Admin/AdminPosts/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId");
+            ViewData["DanhMuc"] = new SelectList(_context.Categories, "CatId", "CatName");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "FullName");
             return View();
         }
 
@@ -65,12 +71,24 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,Title,Scontents,Contents,Thumb,Published,Alias,CreateDate,Author,AccountId,Tags,CatId,IsHot,IsNewFeed,MetaDesc,MetaKey,Views")] Post post)
+        public async Task<IActionResult> Create([Bind("PostId,Title,Scontents,Contents,Thumb,Published,Alias,CreateDate,Author,AccountId,Tags,CatId,IsHot,IsNewFeed,MetaDesc,MetaKey,Views")] Post post, IFormFile fthumb)
         {
             if (ModelState.IsValid)
             {
+                post.Title = Utilities.ToTitleCase(post.Title);
+                if (fthumb != null)
+                {
+                    string extension = Path.GetExtension(fthumb.FileName);
+                    string image = "thumb_" + Utilities.ToUrlFriendly(post.Title) + "_preview" + extension;
+                    post.Thumb = await Utilities.UploadFile(fthumb, @"posts", image.ToLower());
+                }
+                if (string.IsNullOrEmpty(post.Thumb)) post.Thumb = "default.jpg";
+                post.Alias = Utilities.ToUrlFriendly(post.Title);
+                post.CreateDate = DateTime.Now;
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+                _notifyService.Success("Create Success");
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "AccountId", post.AccountId);
@@ -99,7 +117,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Scontents,Contents,Thumb,Published,Alias,CreateDate,Author,AccountId,Tags,CatId,IsHot,IsNewFeed,MetaDesc,MetaKey,Views")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Scontents,Contents,Thumb,Published,Alias,CreateDate,Author,AccountId,Tags,CatId,IsHot,IsNewFeed,MetaDesc,MetaKey,Views")] Post post, IFormFile fthumb)
         {
             if (id != post.PostId)
             {
@@ -110,8 +128,21 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 try
                 {
+                    post.Title = Utilities.ToTitleCase(post.Title);
+                    if (fthumb != null)
+                    {
+                        string extension = Path.GetExtension(fthumb.FileName);
+                        string image = "thumb_" + Utilities.ToUrlFriendly(post.Title) + "_preview" + extension;
+                        post.Thumb = await Utilities.UploadFile(fthumb, @"posts", image.ToLower());
+                    }
+                    if (string.IsNullOrEmpty(post.Thumb)) post.Thumb = "default.jpg";
+                    post.Alias = Utilities.ToUrlFriendly(post.Title);
+                    post.CreateDate = DateTime.Now;
+
                     _context.Update(post);
                     await _context.SaveChangesAsync();
+                    _notifyService.Success("Change Success");
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -156,6 +187,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             var post = await _context.Posts.FindAsync(id);
             _context.Posts.Remove(post);
+            _notifyService.Success("Delete Success");
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
