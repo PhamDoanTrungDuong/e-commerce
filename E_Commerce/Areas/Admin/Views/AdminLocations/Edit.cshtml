@@ -1,0 +1,74 @@
+﻿@model E_Commerce.Models.Location
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Tỉnh/Thành";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-header">
+    <h2 class="header-title">Chỉnh sửa Tỉnh/Thành</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <a asp-area="Admin" asp-controller="AdminLocations" asp-action="Index" class="breadcrumb-item">Quản Lý Tỉnh/Thành</a>
+            <span class="breadcrumb-item active">Chỉnh sửa Tỉnh/Thành</span>
+        </nav>
+    </div>
+</div>
+<form method="post" asp-area="Admin" asp-controller="AdminLocations" asp-route-id="@Model.LocationId" asp-action="Edit">
+    <input type="hidden" asp-for="LocationId"/>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-layout">
+        <div class="row mg-b-25">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-control-label">TÊN TỈNH/THÀNH: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="Name">
+                </div>
+            </div><!-- col-4 -->
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-control-label">KIỂU: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="Type">
+                </div>
+            </div><!-- col-4 -->
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-control-label">SLUG: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="Slug">
+                </div>
+            </div><!-- col-4 -->
+        </div><!-- row -->
+        <div class="row mg-b-25">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="form-control-label">NAME WITH TYPE: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="NameWithType">
+                </div>
+            </div><!-- col-4 -->
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="form-control-label">PATH WITH TYPE: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="PathWithType">
+                </div>
+            </div><!-- col-4 -->
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="form-control-label">PARENT CODE: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="number" asp-for="ParentCode">
+                </div>
+            </div><!-- col-4 -->
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="form-control-label">LEVELS: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="number" asp-for="Levels">
+                </div>
+            </div><!-- col-4 -->
+        </div>
+
+        <div class="form-layout-footer">
+            <button class="btn btn-primary bd-0">Save Changes</button>
+            <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminLocations" asp-action="Index">Back To List</button>
+        </div><!-- form-layout-footer -->
+    </div><!-- form-layout -->
+</form>
+
