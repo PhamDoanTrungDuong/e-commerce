@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using E_Commerce.Areas.Admin.Models;
 
 #nullable disable
 
@@ -375,5 +376,7 @@ namespace E_Commerce.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<E_Commerce.Areas.Admin.Models.ChangePasswordViewModel> ChangePasswordViewModel { get; set; }
     }
 }

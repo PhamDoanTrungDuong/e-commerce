@@ -8,10 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
 using Blogs.Extension;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Http;
+using E_Commerce.Areas.Admin.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminAccountsController : Controller
     {
         private readonly MarketDBContext _context;
@@ -73,11 +77,12 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                account.Salt = (account.Salt).ToMD5();
                 string passnow = (account.Password.ToLower() + account.Salt.Trim()).ToMD5();
                 account.Password = passnow;
                 account.CreateDate = DateTime.Now;
                 account.LastLogin = DateTime.Now;
-                account.Salt = (account.Salt).ToMD5();
+               
 
                 _context.Add(account);
                 _notifyService.Success("Create Success");
@@ -179,5 +184,104 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             return _context.Accounts.Any(e => e.AccountId == id);
         }
+
+
+        [Route("/edit-profile.html", Name = "EditProfile")]
+        //[Authorize]
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            if (!User.Identity.IsAuthenticated) Response.Redirect("/dang-nhap.html");
+            var taikhoanID = HttpContext.Session.GetString("AccountId");
+            if (taikhoanID == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            var account = _context.Accounts.AsNoTracking().FirstOrDefault(x => x.AccountId == int.Parse(taikhoanID));
+            if (account == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            return View(account);
+        }
+
+        [Route("/edit-profile.html", Name = "EditProfile")]
+        //[Authorize]
+        [HttpPost]
+        public IActionResult EditProfile(Account model)
+        {
+            if (!User.Identity.IsAuthenticated) Response.Redirect("/dang-nhap.html");
+            var taikhoanID = HttpContext.Session.GetString("AccountId");
+            if (taikhoanID == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            if (ModelState.IsValid)
+            {
+                var account = _context.Accounts.AsNoTracking().FirstOrDefault(x => x.AccountId == int.Parse(taikhoanID));
+                try
+                {
+                    account.FullName = model.FullName;
+                    account.Phone = model.Phone;
+                    account.Email = model.Email;
+                    _context.Update(account);
+                    _notifyService.Success("Changes Success");
+                    _context.SaveChanges();
+                    return RedirectToAction("EditProfile", "AdminAccounts", new { Area = "Admin" });
+                }
+                catch
+                {
+                    return View(model);
+                }
+            }
+            return View();
+        }
+
+
+        [Route("/doi-mat-khau.html", Name = "ChangePassword")]
+        //[Authorize]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            if (!User.Identity.IsAuthenticated) Response.Redirect("/dang-nhap.html");
+            var taikhoanID = HttpContext.Session.GetString("AccountId");
+            if (taikhoanID == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            var account = _context.Accounts.AsNoTracking().FirstOrDefault(x => x.AccountId == int.Parse(taikhoanID));
+            if (account == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            return View();
+        }
+
+        [Route("/doi-mat-khau.html", Name = "ChangePassword")]
+        //[Authorize]
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!User.Identity.IsAuthenticated) Response.Redirect("/dang-nhap.html");
+            var taikhoanID = HttpContext.Session.GetString("AccountId");
+            if (taikhoanID == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+            if (ModelState.IsValid)
+            {
+                var account = _context.Accounts.AsNoTracking().FirstOrDefault(x => x.AccountId == int.Parse(taikhoanID));
+
+                if (account == null) return RedirectToAction("Login", "AdminLogin", new { Area = "Admin" });
+
+                try
+                {
+                    string passnow = (model.PasswordNow.ToLower() + account.Salt.Trim()).ToMD5();
+                    if (passnow == account.Password.Trim())
+                    {
+                        account.Password = (model.Password.ToLower() + account.Salt.Trim()).ToMD5();
+                        _context.Update(account);
+                        _notifyService.Success("Changes Success");
+                        _context.SaveChanges();
+                        return RedirectToAction("EditProfile", "AdminAccounts", new { Area = "Admin" });
+                    }
+                    else
+                    {
+                        View();
+                    }
+
+                }
+                catch
+                {
+                    return View(model);
+                }
+            }
+            return View();
+        }
+
+
+
     }
 }

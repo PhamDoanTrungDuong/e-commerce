@@ -36,30 +36,30 @@ namespace E_Commerce
             services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-            //services.AddMvc();
-            //services.AddDistributedMemoryCache();
-            //services.AddSession();
-            //services.AddMemoryCache();
-            //services.AddResponseCompression();
-            //services.AddResponseCaching();
-            //services.AddHttpContextAccessor();
-            //services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
-            //        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
-            //services.AddAuthentication("CookieAuthentication")
-            //    .AddCookie("CookieAuthentication", config =>
-            //    {
-            //        config.Cookie.Name = "UserLoginCookie";
-            //        config.ExpireTimeSpan = TimeSpan.FromDays(1);
-            //        config.LoginPath = "/dang-nhap.html";
-            //        config.LogoutPath = "/dang-xuat.html";
-            //        config.AccessDeniedPath = "/not-found.html";
-            //    });
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.Cookie.HttpOnly = true;
-            //    options.Cookie.Expiration = TimeSpan.FromDays(150);
-            //    options.ExpireTimeSpan = TimeSpan.FromDays(150);
-            //});
+            services.AddMvc();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddMemoryCache();
+            services.AddResponseCompression();
+            services.AddResponseCaching();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+            services.AddAuthentication("CookieAuthentication")
+                .AddCookie("CookieAuthentication", config =>
+                {
+                    config.Cookie.Name = "UserLoginCookie";
+                    config.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                    config.LoginPath = "/dang-nhap.html";
+                    config.LogoutPath = "/dang-xuat.html";
+                    config.AccessDeniedPath = "/not-found.html";
+                });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.ExpireTimeSpan = TimeSpan.FromDays(150);
+            });
 
             services.AddNotyf(config => { config.DurationInSeconds = 3; config.IsDismissable = true; config.Position = NotyfPosition.TopCenter; });
 
@@ -68,6 +68,7 @@ namespace E_Commerce
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -82,6 +83,8 @@ namespace E_Commerce
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

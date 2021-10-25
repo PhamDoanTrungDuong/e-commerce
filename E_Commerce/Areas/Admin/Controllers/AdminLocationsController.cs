@@ -9,10 +9,12 @@ using E_Commerce.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using Blogs.Helpers;
 using PagedList.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class AdminLocationsController : Controller
     {
         private readonly MarketDBContext _context;
