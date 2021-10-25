@@ -63,7 +63,7 @@
         <form asp-action="Delete" asp-controller="AdminLocations" >
             <input type="hidden" asp-for="LocationId" />
             <input type="submit" value="Delete" class="btn btn-danger m-l-15" /> |
-            <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminLocations" asp-action="Index">Back To List</button>
+            <button class="btn btn-secondary bd-0" asp-area="Admin" asp-route-id="@Model.LocationId" asp-controller="AdminLocations" asp-action="Index">Back To List</button>
         </form>
     </div>
 </div>
