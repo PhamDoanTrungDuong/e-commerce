@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
+using Blogs.Extension;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
@@ -14,9 +16,12 @@ namespace E_Commerce.Areas.Admin.Controllers
     {
         private readonly MarketDBContext _context;
 
-        public AdminAccountsController(MarketDBContext context)
+        public INotyfService _notifyService { get; }
+
+        public AdminAccountsController(MarketDBContext context, INotyfService notifyService)
         {
             _context = context;
+            _notifyService = notifyService;
         }
 
         // GET: Admin/AdminAccounts
@@ -48,7 +53,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "Description");
             return View(account);
         }
 
@@ -68,11 +73,18 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                string passnow = (account.Password.ToLower() + account.Salt.Trim()).ToMD5();
+                account.Password = passnow;
+                account.CreateDate = DateTime.Now;
+                account.LastLogin = DateTime.Now;
+                account.Salt = (account.Salt).ToMD5();
+
                 _context.Add(account);
+                _notifyService.Success("Create Success");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
         }
 
@@ -89,7 +101,8 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["QuyenTruyCap"] = new SelectList(_context.Roles, "RoleId", "Description");
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
         }
 
@@ -102,7 +115,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (id != account.AccountId)
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
 
             if (ModelState.IsValid)
@@ -110,6 +124,7 @@ namespace E_Commerce.Areas.Admin.Controllers
                 try
                 {
                     _context.Update(account);
+                    _notifyService.Success("Changes Success");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -125,7 +140,7 @@ namespace E_Commerce.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleId", account.RoleId);
+            ViewData["RoleId"] = new SelectList(_context.Roles, "RoleId", "RoleName", account.RoleId);
             return View(account);
         }
 
@@ -155,6 +170,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             var account = await _context.Accounts.FindAsync(id);
             _context.Accounts.Remove(account);
+            _notifyService.Success("Delete Success");
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

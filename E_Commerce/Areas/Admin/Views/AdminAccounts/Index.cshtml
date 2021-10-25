@@ -16,18 +16,20 @@
 </div>
 <div class="card">
     <div class="card-body">
+        <div class=" m-b-15">
+            <a class="btn btn-primary" asp-controller="AdminAccounts" asp-action="Create">
+                <i class="anticon anticon-plus-circle m-r-5"></i>Thêm Tài Khoản
+            </a>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover e-commerce-table">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Họ và Tên</th>
-                        <th>Email</th>
-                        <th>Điện thoại</th>
-                        <th>Lần truy cập cuối</th>
-                        <th>Quyền truy cập</th>
-                        <th>Trạng thái</th>
-                        <th></th>
+                        <th>HỌ TÊN</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>QUYỀN TRUY CẬP</th>
+                        <th>#</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,15 +42,11 @@
                                     @item.AccountId
                                 </td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img class="img-fluid rounded" src="assets/images/others/thumb-9.jpg" style="max-width: 60px" alt="">
-                                        <h6 class="m-b-0 m-l-10">@item.FullName</h6>
-                                    </div>
+                                    <p>Họ và Tên: @item.FullName</p>
+                                    <p>Email: @item.Email</p>
+                                    <p>Số điện thoại: @item.Phone</p>
+                                    <p>Đăng nhập lần cuối: @item.LastLogin</p>
                                 </td>
-                                <td>@item.Email</td>
-                                <td>@item.Phone</td>
-                                <td>@item.LastLogin</td>
-                                <td>@item.Role.Description</td>
                                 <td>
                                     @if (@item.Active)
                                     {
@@ -64,6 +62,9 @@
                                             <div>Block</div>
                                         </div>
                                     }
+                                </td>
+                                <td>
+                                    @item.Role.RoleName
                                 </td>
                                 <td class="text-right">
                                     <a class="btn btn-success btn-sm m-r-5" Admin" asp-controller="AdminAccounts" asp-action="Details" asp-route-id="@item.AccountId">View</a>
