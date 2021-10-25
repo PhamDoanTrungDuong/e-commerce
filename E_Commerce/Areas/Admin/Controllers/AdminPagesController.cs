@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Http;
 using Blogs.Helpers;
 using System.IO;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class AdminPagesController : Controller
     {
         private readonly MarketDBContext _context;

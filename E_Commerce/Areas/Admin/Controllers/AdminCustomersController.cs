@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using E_Commerce.Models;
 using PagedList.Core;
 using Blogs.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles="Admin")]
     public class AdminCustomersController : Controller
     {
         private readonly MarketDBContext _context;

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class AdminLoginController : Controller
     {
 
@@ -34,7 +35,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             if (taikhoanID != null) return RedirectToAction("Index", "Home", new { Area = "Admin" });
             ViewBag.ReturnUrl = returnUrl;
             return View();
-
         }
 
         [HttpPost]
@@ -97,6 +97,22 @@ namespace E_Commerce.Areas.Admin.Controllers
                 return RedirectToAction("Login", "Home", new { Area = "Admin" });
             }
             return RedirectToAction("Login", "Home", new { Area = "Admin" });
+
+        }
+
+        [Route("/dang-xuat.html", Name = "Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                await HttpContext.SignOutAsync();
+                HttpContext.Session.Remove("AccountId");
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
         }
     }

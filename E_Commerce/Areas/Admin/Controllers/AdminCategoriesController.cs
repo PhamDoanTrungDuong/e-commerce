@@ -11,10 +11,12 @@ using PagedList.Core;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminCategoriesController : Controller
     {
         private readonly MarketDBContext _context;

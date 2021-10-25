@@ -1,0 +1,34 @@
+﻿@model E_Commerce.Areas.Admin.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLoginLayout.cshtml";
+}
+<div class="card-body">
+    <div class="d-flex align-items-center justify-content-between m-b-30">
+        <img class="img-fluid" alt="" src="~/AdminAssets/images/logo/logo.png">
+        <h2 class="m-b-0">Sign In</h2>
+    </div>
+    <form asp-area="Admin" asp-controller="AdminLogin" asp-action="Login" method="post">
+        <div class="form-group">
+            <label class="font-weight-semibold" for="userName">Username:</label>
+            <div class="input-affix">
+                <i class="prefix-icon anticon anticon-user"></i>
+                <input type="text" class="form-control" asp-for="Email" placeholder="Enter your email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="font-weight-semibold" for="password">Password:</label>
+            <a class="float-right font-size-13 text-muted" href="">Forget Password?</a>
+            <div class="input-affix m-b-10">
+                <i class="prefix-icon anticon anticon-lock"></i>
+                <input type="password" class="form-control" asp-for="Password" placeholder="Enter your password">
+            </div>
+        </div>
+        <p class="mg-b-0 text-danger">@ViewBag.Error</a></p>
+        <div class="form-group">
+            <div class="d-flex align-items-center justify-content-between">
+                <button class="btn btn-primary">Sign In</button>
+            </div>
+        </div>
+    </form>
+</div>
