@@ -1,0 +1,67 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<E_Commerce.Models.Shipper>
+
+@{
+    ViewData["Title"] = "Quản Lý Shippers";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2 class="header-title">Quản Lý Shippers</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Danh Sách Shippers</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class=" m-b-15">
+            <a class="btn btn-primary" asp-controller="AdminShippers" asp-action="Create">
+                <i class="anticon anticon-plus-circle m-r-5"></i>Thêm Shipper
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>HỌ TÊN</th>
+                        <th>CÔNG TY</th>
+                        <th>NGÀY GIAO HÀNG</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                    <tr>
+                        <td>
+                            @item.ShipperId
+                        </td>
+                        <td>
+                            <p>Họ và Tên: @item.ShipperName</p>
+                            <p>Số điện thoại: @item.Phone</p>
+                        </td>
+                        <td>
+                            @item.Comnapy
+                        </td>
+                        <td>
+                            @item.ShipDate
+                        </td>
+                        <td class="text-right">
+                            <a class="btn btn-success btn-sm m-r-5" Admin" asp-controller="AdminShippers" asp-action="Details" asp-route-id="@item.ShipperId">View</a>
+                            <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminShippers" asp-action="Edit" asp-route-id="@item.ShipperId"><i class="anticon anticon-edit"></i> Update</a>
+                            <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminShippers" asp-action="Delete" asp-route-id="@item.ShipperId"><i class="anticon anticon-delete"></i> Delete</a>
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
