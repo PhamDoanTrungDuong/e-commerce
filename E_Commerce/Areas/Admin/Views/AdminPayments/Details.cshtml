@@ -1,0 +1,19 @@
+﻿@model E_Commerce.Models.Payment
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Phương Thức";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="form-layout">
+    <div class="row mg-b-25">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-control-label">Tên Phương Thức: <span class="text-danger">*</span></label>
+                <input class="form-control" type="text" asp-for="PaymentType" disabled>
+            </div>
+        </div><!-- col-4 -->
+    </div><!-- row -->
+</div><!-- form-layout -->
+<form asp-action="Delete" asp-controller="AdminPayments">
+    <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminPayments" asp-action="Index">Back To List</button>
+</form>

@@ -1,0 +1,34 @@
+﻿@model E_Commerce.Models.TransactStatus
+
+@{
+    ViewData["Title"] = "Chi Tiết Trạng Thái";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-header">
+    <h2 class="header-title">Trạng Thái Giao Dịch</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Chi Tiết Giao Dịch</span>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label class="form-control-label">Trạng Thái: <span class="text-danger">*</span></label>
+            <input disabled class="form-control" type="text" asp-for="Status">
+        </div>
+    </div><!-- col-4 -->
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label class="form-control-label">Mô Tả: <span class="text-danger">*</span></label>
+            <input disabled class="form-control" type="text" asp-for="Description">
+        </div>
+    </div><!-- col-4 -->
+</div><!-- form-layout -->
+<form>
+    <div class="form-layout-footer">
+        <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminTransactStatus" asp-action="Index">Back To List</button>
+    </div><!-- form-layout-footer -->
+</form>
