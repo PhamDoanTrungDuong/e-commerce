@@ -24,7 +24,13 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="app-chat.html">Chat</a>
+                        <a asp-area="Admin" asp-controller="AdminOrders" asp-action="Index">Danh Sách Đơn Hàng</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="AdminPayments" asp-action="Index">Phương Thức Thanh Toán</a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="AdminTransactStatus" asp-action="Index">Trạng Thái Giao Dịch</a>
                     </li>
                 </ul>
             </li>
@@ -57,9 +63,6 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a asp-area="Admin" asp-controller="AdminCustomers" asp-action="Index">Danh sách khách hàng</a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="AdminCustomers" asp-action="Search">Tìm kiếm khách hàng</a>
                     </li>
                 </ul>
             </li>

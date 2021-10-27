@@ -26,6 +26,7 @@ namespace E_Commerce.Models
         public int? ProductId { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Payment Payment { get; set; }
         public virtual Product Product { get; set; }
         public virtual Shipper Shipper { get; set; }
         public virtual TransactStatus TransactStatus { get; set; }

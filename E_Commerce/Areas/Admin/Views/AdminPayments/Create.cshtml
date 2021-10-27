@@ -1,0 +1,27 @@
+﻿@model E_Commerce.Models.Payment
+
+@{
+    ViewData["Title"] = "Thêm Mới Phương Thức";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form method="post" asp-area="Admin" asp-controller="AdminPayments" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-layout">
+        <div class="row mg-b-25">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-control-label">Tên Phương Thức: <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" asp-for="PaymentType">
+                </div>
+            </div><!-- col-4 -->
+        </div><!-- row -->
+
+        <div class="form-layout-footer">
+            <button class="btn btn-primary bd-0">Save</button>
+            <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminPayments" asp-action="Index">Back To List</button>
+        </div><!-- form-layout-footer -->
+    </div><!-- form-layout -->
+</form>
+
+

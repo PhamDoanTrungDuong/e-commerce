@@ -1,0 +1,26 @@
+﻿@model List<Customer>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.CustomerId
+                </td>
+                <td>
+                    <p> @item.FullName</p>
+                    <p> @item.Phone</p>
+                    <p> @item.Email</p>
+                </td>
+                <td>@item.Address</td>
+                <td>@item.Location.Name</td>
+
+                <td class="text-right">
+                    <a class="btn btn-success btn-sm m-r-5" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Details" asp-route-id="@item.CustomerId">View</a>
+                    <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Edit" asp-route-id="@item.CustomerId"><i class="anticon anticon-edit"></i> Update</a>
+                    <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminCustomers" asp-action="Delete" asp-route-id="@item.CustomerId"><i class="anticon anticon-delete"></i> Delete</a>
+                </td>
+            </tr>
+        }
+    }

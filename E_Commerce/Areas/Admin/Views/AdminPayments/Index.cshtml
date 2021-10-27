@@ -1,0 +1,58 @@
+﻿@model IEnumerable<E_Commerce.Models.Payment>
+
+@{
+    ViewData["Title"] = "Phương Thức Thanh Toán";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2 class="header-title">Phương Thức Thanh Toán</h2>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+            <span class="breadcrumb-item active">Phương Thức Thanh Toán</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class=" m-b-15">
+            <a class="btn btn-primary" asp-controller="AdminPayments" asp-action="Create">
+                <i class="anticon anticon-plus-circle m-r-5"></i>Thêm Phương Thức
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Phương Thức</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.PaymentId
+                                </td>
+                                <td>
+                                    @item.PaymentType
+                                </td>
+
+                                <td class="text-right">
+                                    <a class="btn btn-success btn-sm m-r-5" asp-area="Admin" asp-controller="AdminPayments" asp-action="Details" asp-route-id="@item.PaymentId">View</a>
+                                    <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminPayments" asp-action="Edit" asp-route-id="@item.PaymentId"><i class="anticon anticon-edit"></i> Update</a>
+                                    <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminPayments" asp-action="Delete" asp-route-id="@item.PaymentId"><i class="anticon anticon-delete"></i> Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

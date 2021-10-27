@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using E_Commerce.Areas.Admin.Models;
 
 #nullable disable
 
@@ -27,6 +26,7 @@ namespace E_Commerce.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -205,6 +205,11 @@ namespace E_Commerce.Models
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Orders_Customers");
 
+                entity.HasOne(d => d.Payment)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.PaymentId)
+                    .HasConstraintName("FK_Orders_Payments");
+
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.ProductId)
@@ -256,6 +261,13 @@ namespace E_Commerce.Models
                 entity.Property(e => e.Thumb).HasMaxLength(250);
 
                 entity.Property(e => e.Title).HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
+
+                entity.Property(e => e.PaymentType).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Post>(entity =>
@@ -376,7 +388,5 @@ namespace E_Commerce.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<E_Commerce.Areas.Admin.Models.ChangePasswordViewModel> ChangePasswordViewModel { get; set; }
     }
 }
