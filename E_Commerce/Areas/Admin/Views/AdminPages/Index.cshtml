@@ -3,10 +3,9 @@
 
 @{
     int CurrentPage = ViewBag.CurrentPage;
-    ViewData["Title"] = "Danh sách Trang" + CurrentPage;
+    ViewData["Title"] = "Danh sách Trang " + CurrentPage;
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
 <div class="page-header">
     <h2 class="header-title">Quản Lý Trang</h2>
     <div class="header-sub-title">
@@ -20,7 +19,7 @@
     <div class="card-body">
         <div>
             <div>
-                <a class="btn btn-primary" asp-controller="AdminPages" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i>Thêm Pages</a>
+                <a class="btn btn-primary m-b-15" asp-controller="AdminPages" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i>Thêm Pages</a>
             </div>
         </div>
         <div class="table-responsive">
@@ -28,7 +27,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Tên Trang</th>
+                        <th>Tên Page</th>
                         <th>Trạng thái</th>
                         <th></th>
                     </tr>

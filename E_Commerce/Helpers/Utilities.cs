@@ -19,18 +19,33 @@ namespace Blogs.Helpers
         }
         public static string ToUrlFriendly(this string url)
         {
-            var result = url.ToLower().Trim();
-            result = Regex.Replace(result, "áàạảãâấầậẩẫăắằặẳẵ", "a");
-            result = Regex.Replace(result, "éèẹẻẽêếềệểễ", "e");
-            result = Regex.Replace(result, "óòọỏõôốồộổỗơớờợởỡ", "o");
-            result = Regex.Replace(result, "úùụủũưứừựửữ", "u");
-            result = Regex.Replace(result, "íìịỉĩ", "i");
-            result = Regex.Replace(result, "ýỳỵỷỹ", "y");
-            result = Regex.Replace(result, "đ", "d");
-            result = Regex.Replace(result, "[^a-z0-9-]", "");
-            result = Regex.Replace(result, "(-)+", "-");
+            url = url.ToLower();
+            url = Regex.Replace(url, @"[áàạảãâấầậẩẫăắằặẳẵ]", "a");
+            url = Regex.Replace(url, @"[éèẹẻẽêếềệểễ]", "e");
+            url = Regex.Replace(url, @"[óòọỏõôốồộổỗơớờợởỡ]", "o");
+            url = Regex.Replace(url, @"[úùụủũưứừựửữ]", "u");
+            url = Regex.Replace(url, @"[íìịỉĩ]", "i");
+            url = Regex.Replace(url, @"[ýỳỵỷỹ]", "y");
+            url = Regex.Replace(url, @"[đ]", "d");
+            //Chỉ nhận [^0-9a-z-\s]
+            url = Regex.Replace(url.Trim(), @"[^0-9a-z-\s]", "").Trim();
+            //xử lý nhiều hơn 1 khoảng trắng
+            url = Regex.Replace(url.Trim(), @"\s+", "-");
+            //thay khoảng trắng bằng -
+            url = Regex.Replace(url, @"\s", "-");
+            while (true)
+            {
+                if(url.IndexOf("--") != -1)
+                {
+                    url = url.Replace("--", "-");
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-            return result;
+            return url;
         }
         public static bool IsInterger(string str)
         {
