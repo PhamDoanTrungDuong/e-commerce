@@ -4,6 +4,11 @@
     ViewData["Title"] = "Tạo mới Danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+@section Styles{
+    <link href="~/AdminAssets/z_SummerNote/summernote-bs4.css" rel="stylesheet">
+    <link href="~/AdminAssets/z_SummerNote/summernote.css" rel="stylesheet">
+}
+
 <div class="page-header">
     <h2 class="header-title">Quản Lý Danh mục</h2>
     <div class="header-sub-title">
@@ -15,106 +20,130 @@
     </div>
 </div>
 <form method="post" asp-area="Admin" asp-controller="AdminCategories" asp-action="Create" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-layout">
-        <div class="row mg-b-25">
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <label class="form-control-label">TÊN DANH MỤC: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="CatName">
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label">TIÊU ĐỀ: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="Title">
-                </div>
-            </div><!-- col-4 -->
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <label class="form-control-label">DANH MỤC CHA: <span class="tx-danger">*</span></label>
-                    <select class="form-control selecte2" asp-for="ParentId" asp-items="@ViewBag.DanhMucGoc" required>
-                        >
-                        <option value="0" selected> DANH MỤC GỐC</option>
-                    </select>
-                </div>
-            </div><!-- col-4 -->
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <label class="form-control-label">SẮP XẾP: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="number" value="0" asp-for="Ordering">
-                </div>
-            </div><!-- col-4 -->
-        </div><!-- row -->
-        <div class="row mg-b-25">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="form-control-label">MÔ TẢ: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="Description">
-                </div>
-            </div><!-- col-4 -->
-        </div>
-        <div class="row mg-b-25">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label class="font-weight-semibold">Hình Ảnh: </label>
-                    <input type="file" name="fthumb" class="form-control-file" asp-for="Thumb">
-                    <span asp-validation-for="Thumb" class="text-danger"></span>
-                </div>
-            </div><!-- col-4 -->
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label class="font-weight-semibold">Cover: </label>
-                    <input type="file" name="fcover" class="form-control-file" asp-for="Cover">
-                    <span asp-validation-for="Cover" class="text-danger"></span>
-                </div>
-            </div><!-- col-4 -->
-        </div><!-- row -->
-        <div class="row mg-b-25">
-            <div class="form-group d-flex align-items-center col-lg-12">
-                <div class="switch m-r-10">
-                    <input type="checkbox" asp-for="Published">
-                    <label for="Published"></label>
-                </div>
-                <label>Published</label>
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+
             </div>
-        </div><!-- row -->
-        <div class="row mg-b-25">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="form-control-label">Alias: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="Alias">
-                </div>
-            </div><!-- col-4 -->
+            <div class="m-b-15">
+                <button class="btn btn-secondary" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">
+                    <i class="anticon anticon-save"></i>
+                    <span>Back To List</span>
+                </button>
+                <button class="btn btn-primary">
+                    <i class="anticon anticon-save"></i>
+                    <span>Tạo mới Danh Mục</span>
+                </button>
+            </div>
         </div>
-        <div class="row mg-b-25">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="form-control-label">MetaKey: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="MetaKey">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">THÔNG TIN DANH MỤC</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-option">THÔNG TIN SEO</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">MÔ TẢ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="PageName">Tên Danh Mục</label>
+                        <input class="form-control" type="text" asp-for="CatName">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="PageName">Tiêu Đề</label>
+                        <input class="form-control" type="text" asp-for="Title">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="Ordering">Ordering</label>
+                        <input class="form-control" type="number" asp-for="Ordering">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Ảnh Đại Diện</label>
+                            <input type="file" name="fthumb" class="form-control-file" asp-for="Thumb">
+                            <span asp-validation-for="Thumb" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-semibold" for="productCategory">Cover</label>
+                            <input type="file" name="fthumb" class="form-control-file" asp-for="Cover">
+                            <span asp-validation-for="Cover" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center p-t-30">
+                        <div class="switch m-r-10">
+                            <input type="checkbox" asp-for="Published">
+                            <label for="Published"></label>
+                        </div>
+                        <label>Published</label>
+                    </div>
                 </div>
-            </div><!-- col-4 -->
+            </div>
         </div>
-        <div class="row mg-b-25">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="form-control-label">MetaDesc: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="MetaDesc">
+        <div class="tab-pane fade" id="product-edit-option">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productSize">Title</label>
+                        <input class="form-control" type="text" asp-for="Title">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productColors">MetaDesc</label>
+                        <input class="form-control" type="text" asp-for="MetaDesc">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">MetaKey</label>
+                        <input class="form-control" type="text" asp-for="MetaKey">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">SchemaMarkup</label>
+                        <input class="form-control" type="text" asp-for="SchemaMarkup">
+                    </div>
                 </div>
-            </div><!-- col-4 -->
+            </div>
         </div>
-        <div class="row mg-b-25">
-            <div class="col-lg-12">
-                <div class="form-group">
-                    <label class="form-control-label">Schema Markup: <span class="tx-danger">*</span></label>
-                    <input class="form-control" type="text" asp-for="SchemaMarkup">
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+                <div class="card-body">
+                    <textarea id="summernote" asp-for="Description">
+                </textarea>
                 </div>
-            </div><!-- col-4 -->
+            </div>
         </div>
-        <div class="form-layout-footer">
-            <button class="btn btn-primary bd-0">Save</button>
-            <button class="btn btn-secondary bd-0" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">Back To List</button>
-        </div><!-- form-layout-footer -->
-    </div><!-- form-layout -->
+    </div>
 </form>
 
+
+@section Scripts{
+    <script src="~/AdminAssets/vendors/select2/select2.min.js"></script>
+    <script src="~/AdminAssets/js/pages/e-commerce-product-edit.js"></script>
+    <script src="~/AdminAssets/z_SummerNote/summernote-bs4.js"></script>
+
+    <script>
+        $('#summernote').summernote({
+            placeholder: 'Nhập nội dung',
+            tabsize: 2,
+            height: 120,
+            focus: true,
+            minHeight: null,
+            maxHeight: null,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    </script>
+}
 
 

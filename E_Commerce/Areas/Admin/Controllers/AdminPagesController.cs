@@ -77,11 +77,11 @@ namespace E_Commerce.Areas.Admin.Controllers
                 if (fthumb != null)
                 {
                     string extension = Path.GetExtension(fthumb.FileName);
-                    string image = "thumb_" + Utilities.ToUrlFriendly(page.Title) + "preview" + extension;
-                    page.Thumb = await Utilities.UploadFile(fthumb, @"pages", image.ToLower());
+                    string imageName =  Utilities.ToUrlFriendly(page.PageName) + extension;
+                    page.Thumb = await Utilities.UploadFile(fthumb, @"pages", imageName.ToLower());
                 }
                 if (string.IsNullOrEmpty(page.Thumb)) page.Thumb = "default.jpg";
-                page.Alias = Utilities.ToUrlFriendly(page.PageName);
+                page.Alias = Utilities.ToUrlFriendly(page.Title);
                 page.CreateDate = DateTime.Now;
 
                 _context.Add(page);

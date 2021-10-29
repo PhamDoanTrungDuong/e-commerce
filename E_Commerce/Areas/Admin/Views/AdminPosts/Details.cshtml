@@ -14,102 +14,83 @@
         </nav>
     </div>
 </div>
-<div class="form-layout">
-    <div class="row mg-b-25">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label class="form-control-label">TÊN TIN TỨC: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="Title">
+<div class="page-header no-gutters has-tab">
+    <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+        <div class="media align-items-center m-b-15">
+            <div class="avatar avatar-image rounded" style="height: 70px; width: 70px">
+                <img src="~/images/posts/@Model.Thumb" alt="@Model.Title">
             </div>
-        </div><!-- col-4 -->
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label class="form-control-label">TIÊU ĐỀ: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="Scontents">
+            <div class="m-l-15">
+                <h4 class="m-b-0">@Model.Title</h4>
+                <p class="text-muted m-b-0">Code: #@Model.PostId</p>
             </div>
-        </div><!-- col-4 -->
-    </div><!-- row -->
-    <div class="row mg-b-25">
-        <div class="col-lg-12">
-            <div class="form-group">
-                <label class="form-control-label">NỘI DUNG: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="Contents">
-            </div>
-        </div><!-- col-4 -->
-    </div>
-    <div class="row mg-b-25">
-        <div class="col-lg-6">
-            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
-            <select class="custom-select" asp-items="ViewBag.AccountId" asp-for="AccountId" style="min-width: 180px;" disabled>
-                <option value=""  selected>Chọn quyền Tác giả</option>
-            </select>
-        </div><!-- col-4 -->
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label class="font-weight-semibold">Hình Ảnh: </label>
-                <br />
-                <img src="~/images/posts/@Model.Thumb" width="200"><br /><br />
-                <input disabled type="file" name="fthumb" class="form-control-file" asp-for="Thumb">
-                <span asp-validation-for="Thumb" class="text-danger"></span>
-            </div>
-        </div><!-- col-4 -->
-    </div>
-    <div class="row mg-b-25">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label class="form-control-label">TAGS: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="Tags">
-            </div>
-        </div><!-- col-4 -->
-        <div class="form-group col-md-6">
-            <label class="font-weight-semibold" for="productCategory">Danh mục</label>
-            <select class="custom-select" asp-items="ViewBag.DanhMuc" asp-for="CatId" style="min-width: 180px;" disabled>
-                <option value="" selected >Chọn quyền Danh mục</option>
-            </select>
+        </div>
+        <div class="m-b-15">
+            <a class="btn btn-secondary" asp-area="Admin" asp-controller="AdminPosts" asp-action="Index">Back To List</a>
+            <a class="btn btn-primary" asp-area="Admin" asp-controller="AdminPosts" asp-action="Edit" asp-route-id="@Model.PostId">Edit</a>
         </div>
     </div>
-
-    <div class="row mg-b-25">
-        <div class="col-lg-4">
-            <div class="form-group d-flex align-items-center p-t-30">
-                <div class="switch m-r-10">
-                    <input disabled type="checkbox" asp-for="IsHot">
-                    <label for="IsHot"></label>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#product-overview">TỔNG QUAN</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#product-image">Hình Ảnh Bài Viết</a>
+        </li>
+    </ul>
+</div>
+<div class="container-fluid">
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-overview">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Thông Tin Bài Viết: @Model.Title</h4>
+                    <div class="table-responsive">
+                        <table class="product-info-table m-t-20">
+                            <tbody>
+                                <tr>
+                                    <td>Post Name:</td>
+                                    <td class="text-dark font-weight-semibold">@Model.Title</td>
+                                </tr>
+                                <tr>
+                                    <td>Alias:</td>
+                                    <td class="text-dark font-weight-semibold">@Model.Alias</td>
+                                </tr>
+                                <tr>
+                                    <td>Trạng Thái:</td>
+                                    <td>
+                                        <form>
+                                            <div class="switch m-r-10">
+                                                <input type="checkbox" disabled asp-for="Published">
+                                                <label for="Published"></label>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <label>IsHot</label>
             </div>
-        </div><!-- col-4 -->
-        <div class="col-lg-4">
-            <div class="form-group d-flex align-items-center p-t-30">
-                <div class="switch m-r-10">
-                    <input disabled type="checkbox" asp-for="IsNewFeed">
-                    <label for="IsNewFeed"></label>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Thông Tin Mô Tả</h4>
                 </div>
-                <label>IsNewFeed</label>
-            </div>
-        </div><!-- col-4 -->
-        <div class="col-lg-4">
-            <div class="form-group d-flex align-items-center p-t-30">
-                <div class="switch m-r-10">
-                    <input disabled type="checkbox" asp-for="Published">
-                    <label for="Published"></label>
+                <div class="card-body">
+                    @Html.Raw(Model.Contents)
                 </div>
-                <label>Published</label>
             </div>
-        </div><!-- col-4 -->
-    </div><!-- row -->
-    <div class="row mg-b-25">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label class="form-control-label">MetaKey: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="MetaKey">
+        </div>
+        <div class="tab-pane fade" id="product-image">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="~/images/posts/@Model.Thumb" alt="@Model.Title" style="height: 450px; width: 500px">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div><!-- col-4 -->
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label class="form-control-label">MetaDesc: <span class="text-danger">*</span></label>
-                <input disabled class="form-control" type="text" asp-for="MetaDesc">
-            </div>
-        </div><!-- col-4 -->
+        </div>
     </div>
-</div><!-- form-layout -->
+</div>
