@@ -25,12 +25,12 @@ namespace E_Commerce.Controllers
         {
             return View();
         }
-
+        [Route("ve-chung-toi.html", Name = "About")]
         public IActionResult About()
         {
             return View();
         }
-
+        [Route("lien-he.html", Name = "Contact")]
         public IActionResult Contact()
         {
             return View();
