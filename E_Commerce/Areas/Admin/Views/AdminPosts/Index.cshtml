@@ -30,6 +30,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Tiêu đề</th>
+                        <th>Is Host</th>
+                        <th>Is Newfeed</th>
                         <th>Trạng thái</th>
                         <th></th>
                     </tr>
@@ -39,35 +41,67 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @item.PostId
-                                </td>
-                                <td>
-                                    @item.Title
-                                </td>
-                                <td>
-                                    @if (item.Published == true)
-                                    {
-                                        <div class="d-flex align-items-center">
-                                            <div class="badge badge-success badge-dot m-r-10"></div>
-                                            <div>Public</div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="d-flex align-items-center">
-                                            <div class="badge badge-danger badge-dot m-r-10"></div>
-                                            <div>Block</div>
-                                        </div>
-                                    }
-                                </td>
-                                <td class="text-right">
-                                    <a class="btn btn-success btn-sm m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Details" asp-route-id="@item.PostId">View</a>
-                                    <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminPosts" asp-action="Edit" asp-route-id="@item.PostId"><i class="anticon anticon-edit"></i> Update</a>
-                                    <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminPosts" asp-action="Delete" asp-route-id="@item.PostId"><i class="anticon anticon-delete"></i> Delete</a>
-                                </td>
-                            </tr>
+                    <tr>
+                        <td>
+                            @item.PostId
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @if (item.IsHot == true)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>Hot</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-danger badge-dot m-r-10"></div>
+                                    <div>-</div>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsNewFeed == true)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>Public</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-danger badge-dot m-r-10"></div>
+                                    <div>-</div>
+                                </div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.Published == true)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>Public</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-danger badge-dot m-r-10"></div>
+                                    <div>Block</div>
+                                </div>
+                            }
+                        </td>
+                        <td class="text-right">
+                            <a class="btn btn-success btn-sm m-r-5" asp-area="Admin" asp-controller="AdminPosts" asp-action="Details" asp-route-id="@item.PostId">View</a>
+                            <a class="btn btn-warning btn-sm m-r-5 text-black-50" asp-area="Admin" asp-controller="AdminPosts" asp-action="Edit" asp-route-id="@item.PostId"><i class="anticon anticon-edit"></i> Update</a>
+                            <a class="btn btn-danger btn-sm m-r-5 text-white" asp-area="Admin" asp-controller="AdminPosts" asp-action="Delete" asp-route-id="@item.PostId"><i class="anticon anticon-delete"></i> Delete</a>
+                        </td>
+                    </tr>
                         }
                     }
                 </tbody>
