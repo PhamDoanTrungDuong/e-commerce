@@ -2,7 +2,8 @@
 @model PagedList.Core.IPagedList<E_Commerce.Models.Product>
 
 @{
-    ViewData["Title"] = "Shop Index - " + ViewBag.CurrentPage;
+    Category category = ViewBag.CurrentCat;
+    ViewData["Title"] = "Danh mục: " + category.CatName + " - " + "page." + ViewBag.CurrentPage;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int PageCurrent = ViewBag.CurrentPage;
     int total = ViewBag.Total;
@@ -82,8 +83,7 @@
                                 </div>
                             </div>
                         </div>
-                        
-                       
+                      
                     </div>
                 </div>
                 <div class="col-lg-9 order-lg-2 order-1">
@@ -230,7 +230,7 @@
                         </div>
                         <div aria-label="pagination-area pt-10" style="margin-top: 40px">
                             <ul class="pagination justify-content-center">
-                                <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-action="Index" asp-controller="Product" asp-area=""/>
+                                <pager class="pager-container" list="@Model" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-action="List" asp-controller="Product" asp-area="" asp-route-alias="@category.Alias" />
                             </ul>
                         </div>
                     </div>
