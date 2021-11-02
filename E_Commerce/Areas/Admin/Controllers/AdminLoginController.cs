@@ -1,4 +1,4 @@
-﻿using Blogs.Extension;
+﻿using E_Commerce.Extension;
 using E_Commerce.Areas.Admin.Models;
 using E_Commerce.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -113,7 +113,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
         }
     }
 }

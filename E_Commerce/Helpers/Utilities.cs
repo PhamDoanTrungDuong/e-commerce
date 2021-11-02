@@ -12,6 +12,23 @@ namespace Blogs.Helpers
 {
     public static class Utilities
     {
+
+        public static bool IsValidEmail(string email)
+        {
+            if (email.Trim().EndsWith("."))
+            {
+                return false; // suggested by @TK-421
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public static int PAGE_SIZE = 20;
         public static string ToVnd(this double donGia)
         {

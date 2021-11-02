@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blogs.Extension
+namespace E_Commerce.Extension
 {
     public static class SessionExtensions
     {

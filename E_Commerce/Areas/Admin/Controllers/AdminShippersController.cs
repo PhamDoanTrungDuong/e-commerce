@@ -27,7 +27,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         }
 
         // GET: Admin/AdminShippers
-        public async Task<IActionResult> Index(int? page)
+        public IActionResult Index(int? page)
         {
             var pageNumber = page == null || page <= 0 ? 1 : page.Value;
             var pageSize = Utilities.PAGE_SIZE;
