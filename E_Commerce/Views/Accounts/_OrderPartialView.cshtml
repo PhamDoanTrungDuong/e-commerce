@@ -1,0 +1,35 @@
+﻿@model List<Order>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>Đơn Hàng</th>
+                    <th>Ngày Mua Hàng</th>
+                    <th>Ngày Giao Hàng</th>   
+                    <th>Trạng Thái</th>
+                    <th>Tổng</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a class="account-order-id" href="javascript:void(0)">@item.OrderId</a></td>
+                        <td>@item.OrderDate.Value.ToShortDateString()</td>
+                        <td>@item.ShipDate.Value.ToShortDateString()</td>
+                        <td>@item.TransactStatus.Description</td>
+                        <td>@item.TotalMoney.Value.ToString("#,##0")đ</td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-secondary btn-primary-hover"><span>Xem Đơn Hàng</span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>Chưa Có Đơn Hàng!</p>
+}

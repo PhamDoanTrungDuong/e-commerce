@@ -24,6 +24,7 @@ namespace E_Commerce.Models
         public string Note { get; set; }
         public int? ShipperId { get; set; }
         public int? ProductId { get; set; }
+        public int? TotalMoney { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Payment Payment { get; set; }

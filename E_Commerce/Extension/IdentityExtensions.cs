@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-namespace Blogs.Extension
+namespace E_Commerce.Extension
 {
     public static class IdentityExtensions
     {

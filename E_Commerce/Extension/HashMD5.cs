@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blogs.Extension
+namespace E_Commerce.Extension
 {
     public static class HashMD5
     {
