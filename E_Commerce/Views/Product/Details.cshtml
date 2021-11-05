@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<Product> lsProduct = ViewBag.lsPr; 
+    List<Product> lsProduct = ViewBag.lsPr;
 }
 
 <!-- Begin Main Content Area  -->
@@ -78,7 +78,7 @@
                                         </ul>
                                     </div>
                                     <div class="review-status ps-4">
-                                        <a href="javascript:void(0)">( 1 Customer Review )</a>
+                                        <a href="javascript:void(0)">( 1 Người đã xem )</a>
                                     </div>
                                 </div>
                                 <p class="short-desc mb-6">
@@ -87,20 +87,16 @@
                                 <ul class="quantity-with-btn pb-7">
                                     <li class="quantity">
                                         <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" value="1" type="text">
+                                            <input class="cart-plus-minus-box" id="txtsoLuong" name="txtsoLuong" value="1" type="text">
                                         </div>
                                     </li>
                                     <li class="add-to-cart">
-                                        <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" href="cart.html">Add to cart</a>
-                                    </li>
-                                    <li class="wishlist-btn-wrap">
-                                        <a class="btn rounded-0" href="wishlist.html">
-                                            <i class="pe-7s-like"></i>
-                                        </a>
+                                        <a class="btn btn-custom-size lg-size btn-primary btn-secondary-hover rounded-0" href="javascript:void(0)">Thêm Vào Giỏ Hàng</a>
+                                        <input hidden asp-for="ProductId" />
                                     </li>
                                 </ul>
                                 <div class="product-category text-matterhorn pb-2">
-                                    <span class="title">Categories :</span>
+                                    <span class="title">Danh Mục :</span>
                                     <ul>
                                         <li>
                                             <a href="/@Model.Cat.Alias">@Model.Cat.CatName</a>
@@ -108,7 +104,7 @@
                                     </ul>
                                 </div>
                                 <div class="product-category product-tags text-matterhorn pb-4">
-                                    <span class="title">Product Tags :</span>
+                                    <span class="title">Tag Sản Phẩm :</span>
                                     <ul>
                                         <li>
                                             <a href="javascript:void(0)">@Model.Tags</a>
@@ -116,7 +112,7 @@
                                     </ul>
                                 </div>
                                 <div class="social-link align-items-center pb-lg-8">
-                                    <span class="title pe-3">Share:</span>
+                                    <span class="title pe-3">Chia Sẻ:</span>
                                     <ul>
                                         <li>
                                             <a href="javascript:void(0)">
@@ -416,4 +412,36 @@
         </div>
     </div>
 </main>
-<!-- Main Content Area End Here  -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart").click(function () {
+                    var productid = $('#ProductId').val();
+                    var soLuong = $('#txtsoLuong').val();
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productID: productid,
+                            amount: soLuong
+                        },
+                        success: function (respone) {
+                            loadHeaderCart();
+                            location.reload();
+                        },
+                        error: function (error) {
+                            alert("error" + error.responseText);
+                        }
+                    });
+                });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart");
+                $("#numberCart").load("/AjaxContent/NumberCart");
+            }
+        });
+    </script>
+}
