@@ -15,7 +15,7 @@
                             <li>
                                 <a href="/">Trang Chủ <i class="pe-7s-angle-right"></i></a>
                             </li>
-                            <li>Giở Hàng</li>
+                            <li>Giỏ Hàng</li>
                         </ul>
                     </div>
                 </div>
@@ -33,12 +33,12 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="product_remove">Xóa</th>
                                             <th class="product-thumbnail">Ảnh Sản Phẩm</th>
                                             <th class="cart-product-name">Sản Phẩm</th>
                                             <th class="product-price">Đơn Giá</th>
                                             <th class="product-quantity">Số lượng</th>
                                             <th class="product-subtotal">Thành Tiền</th>
+                                            <th class="product_remove">Xóa</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,24 +47,22 @@
                                             foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td class="product_remove">
-                                                        <a href="javascript:void(0)">
-                                                            <i class="pe-7s-close" title="Remove"></i>
-                                                        </a>
-                                                    </td>
                                                     <td class="product-thumbnail">
                                                         <a href="javascript:void(0)">
-                                                            <img src="/images/products/@item.product.Thumb" alt="@item.product.Title">
+                                                            <img src="/images/products/@item.product.Thumb" alt="@item.product.Title" style=" width: 124px; height : 124px">
                                                         </a>
                                                     </td>
                                                     <td class="product-name"><a href="javascript:void(0)">@item.product.ProductName</a></td>
                                                     <td class="product-price"><span class="amount">@item.product.Price.Value.ToString("#,##0d") đ</span></td>
                                                     <td class="quantity">
                                                         <div class="cart-plus-minus">
-                                                            <input class="cart-plus-minus-box" value="@item.amount" type="text">
+                                                            <input value="@item.amount" data-id="@item.product.ProductId" data-price="@item.product.Price" class="cartItem cart-plus-minus-box" type="number" min="1">
                                                         </div>
                                                     </td>
                                                     <td class="product-subtotal"><span class="amount">@item.TotalMoney.ToString("#,##0") đ</span></td>
+                                                    <td class="product_remove">
+                                                        <input type="button" Value="X" class="removeCart btn btn-danger" data-id="@item.product.ProductId" title="Remove" />
+                                                    </td>
                                                 </tr>
                                             }
                                         }
@@ -72,26 +70,20 @@
                                 </table>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="coupon-all">
-                                        <div class="coupon">
-                                            <input id="coupon_code" class="input-text" name="coupon_code" value="" placeholder="Coupon code" type="text">
-                                            <input class="button mt-xxs-30" name="apply_coupon" value="Apply coupon" type="submit">
-                                        </div>
-                                        <div class="coupon2">
-                                            <input class="button" name="update_cart" value="Update cart" type="submit">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-5 ml-auto">
                                     <div class="cart-page-total">
                                         <h2>Tổng Đơn Hàng</h2>
                                         <ul>
-                                            <li>Subtotal <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") đ</span></li>
+                                            <li>Thành Tiền <span>@Model.Sum(x => x.TotalMoney).ToString("#,##0") đ</span></li>
                                         </ul>
-                                        <a href="javascript:void(0)">Thanh Toán</a>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a href="/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh Toán</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="/dang-nhap-khach-hang.html?returnUrl=/checkout.html" class="btn btn-secondary btn-primary-hover">Thanh Toán</a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -107,4 +99,57 @@
         </div>
     </div>
 </main>
+
+@section Scripts {
+    <script>
+        $(function () {
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart");
+                $("#numberCart").load("/AjaxContent/NumberCart");
+            }
+            $(".removeCart").click(function () {
+                var productid = $(this).attr("data-id");
+                $.ajax({
+                    url: '/api/cart/remove',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();
+                            window.location = 'cart.html';
+                        }
+                    },
+                    error: function (error) {
+                        alert("remove error" + error.responseText);
+                    }
+                });
+            });
+            $(".cartItem").click(function () {
+                var productid = $(this).attr("data-id");
+                var soLuong = parseInt($(this).val());
+                $.ajax({
+                    url: '/api/cart/update',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+                        amount: soLuong
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            loadHeaderCart();
+                            window.location = 'cart.html';
+                        }
+                    },
+                    error: function (error) {
+                        alert("update error" + error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
 

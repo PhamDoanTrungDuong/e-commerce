@@ -25,8 +25,13 @@ namespace E_Commerce.Models
         public int? ShipperId { get; set; }
         public int? ProductId { get; set; }
         public int? TotalMoney { get; set; }
+        public string Address { get; set; }
+        public int? LocationId { get; set; }
+        public int? District { get; set; }
+        public int? Ward { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Location Location { get; set; }
         public virtual Payment Payment { get; set; }
         public virtual Product Product { get; set; }
         public virtual Shipper Shipper { get; set; }

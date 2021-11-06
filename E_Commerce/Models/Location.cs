@@ -10,6 +10,7 @@ namespace E_Commerce.Models
         public Location()
         {
             Customers = new HashSet<Customer>();
+            Orders = new HashSet<Order>();
         }
 
         public int LocationId { get; set; }
@@ -22,5 +23,6 @@ namespace E_Commerce.Models
         public int? Levels { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

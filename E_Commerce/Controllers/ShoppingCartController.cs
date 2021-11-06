@@ -116,7 +116,7 @@ namespace E_Commerce.Controllers
 
         [HttpPost]
         [Route("api/cart/remove")]
-        public IActionResult RemoveCart(int productID, int? amount)
+        public IActionResult RemoveCart(int productID)
         {
             try
             {

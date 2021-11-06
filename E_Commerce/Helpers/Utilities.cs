@@ -12,7 +12,12 @@ namespace Blogs.Helpers
 {
     public static class Utilities
     {
-
+        public static string StripHtml(this string input)
+        {
+            // Will this simple expression replace all tags???
+            var tagsExpression = new Regex(@"</?.+?>");
+            return tagsExpression.Replace(input, " ");
+        }
         public static bool IsValidEmail(string email)
         {
             if (email.Trim().EndsWith("."))

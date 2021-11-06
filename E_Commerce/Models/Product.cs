@@ -10,6 +10,7 @@ namespace E_Commerce.Models
         public Product()
         {
             AttributesPrices = new HashSet<AttributesPrice>();
+            OrderDetails = new HashSet<OrderDetail>();
             Orders = new HashSet<Order>();
         }
 
@@ -38,6 +39,7 @@ namespace E_Commerce.Models
         public virtual Account Account { get; set; }
         public virtual Category Cat { get; set; }
         public virtual ICollection<AttributesPrice> AttributesPrices { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }
