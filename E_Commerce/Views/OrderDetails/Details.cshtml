@@ -1,0 +1,33 @@
+﻿@model E_Commerce.ModelViews.SeeDetails
+@if (Model.order != null)
+{
+    <h1>Thông Tin Đơn hàng @Model.order.OrderId</h1>
+    <p>Ngày Đặt Hàng: @Model.order.ShipDate</p>
+    <p>Trạng Thái: @Model.order.TransactStatus.Description</p>
+    <p>Thành Tiền: @Model.order.TotalMoney.Value.ToString("#,##)") đ</p>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>#</th>
+                    <th>Sản Phẩm</th>
+                    <th>Số Lượng</th>
+                    <th>Đơn Giá</th>
+                    <th>Tổng</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model.orderDetails)
+                {
+                    <tr>
+                        <td>@item.Product.ProductId</td>
+                        <td>@item.Product.ProductName</td>
+                        <td>@item.Amount</td>
+                        <td>@item.Product.Price</td>
+                        <td>@item.TotalMoney.Value.ToString("#,##0")đ</td>
+                        <td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

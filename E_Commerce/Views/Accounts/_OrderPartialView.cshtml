@@ -7,7 +7,7 @@
                 <tr>
                     <th>Đơn Hàng</th>
                     <th>Ngày Mua Hàng</th>
-                    <th>Ngày Giao Hàng</th>   
+                    <th>Ngày Giao Hàng</th>
                     <th>Trạng Thái</th>
                     <th>Tổng</th>
                     <th></th>
@@ -21,15 +21,49 @@
                         <td>@item.TransactStatus.Description</td>
                         <td>@item.TotalMoney.Value.ToString("#,##0")đ</td>
                         <td>
-                            <a href="javascript:void(0)" class="btn btn-secondary btn-primary-hover"><span>Xem Đơn Hàng</span></a>
+                            <a class="btn btn-secondary btn-primary-hover detailsOrder" data-id="@item.OrderId"><span>Xem Đơn Hàng</span></a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <hr />
+        <div id="records_table">
+
+        </div>
     </div>
 }
 else
 {
     <p>Chưa Có Đơn Hàng!</p>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".detailsOrder").click(function () {
+                var orderid = $(this).attr("data-id");
+                $.ajax({
+                    url: '/OrderDetails/Details',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        id: orderid,
+                    },
+                    success: function (results) {
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (error) {
+                        alert("remove error" + error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 }

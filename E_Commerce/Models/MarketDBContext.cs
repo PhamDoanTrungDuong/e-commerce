@@ -182,7 +182,11 @@ namespace E_Commerce.Models
             {
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
+                entity.Property(e => e.Address).HasMaxLength(50);
+
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.LocationId).HasColumnName("LocationID");
 
                 entity.Property(e => e.Note).HasMaxLength(50);
 
@@ -204,6 +208,11 @@ namespace E_Commerce.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Orders_Customers");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_Orders_Locations");
 
                 entity.HasOne(d => d.Payment)
                     .WithMany(p => p.Orders)
@@ -230,6 +239,8 @@ namespace E_Commerce.Models
             {
                 entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
 
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
@@ -240,6 +251,11 @@ namespace E_Commerce.Models
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetails_Orders");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .HasConstraintName("FK_OrderDetails_Products");
             });
 
             modelBuilder.Entity<Page>(entity =>

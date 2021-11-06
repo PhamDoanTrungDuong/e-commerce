@@ -137,7 +137,7 @@ namespace E_Commerce.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("/dang-nhap-khach-hang.html", Name = "dang-nhap")]
-        public async Task<IActionResult> LoginCustomer(LoginViewModel customer, string returnUrl = null)
+        public async Task<IActionResult> LoginCustomer(LoginViewModel customer, string returnUrl)
         {
             try
             {
@@ -188,6 +188,10 @@ namespace E_Commerce.Controllers
                     ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                     await HttpContext.SignInAsync(claimsPrincipal);
 
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
