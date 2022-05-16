@@ -12,8 +12,7 @@
 ###############################################################################
 *.cs     diff=csharp
 *.cs linguist-detectable=true
-*.html linguist-vendored
-*.js linguist-vendored
+*.*html linguist-detectable=false
 
 ###############################################################################
 # Set the merge driver for project and solution files
